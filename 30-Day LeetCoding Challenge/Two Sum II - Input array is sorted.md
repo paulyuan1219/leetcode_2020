@@ -31,3 +31,27 @@ class Solution(object):
             if diff in ht:
                 return i+1, ht[diff]+1
 ```
+
+Solution 2
+Since the list is sorted and there is ganranteed one solution and there’s no duplicated values, we can use a 2 pointer approach.
+
+```
+class Solution(object):
+    def twoSum(self, numbers, target):
+        """
+        :type numbers: List[int]
+        :type target: int
+        :rtype: List[int]
+        """
+        
+        i, j = 0, len(numbers)-1
+        
+        while i < j:
+            curr_sum = numbers[i]+numbers[j]
+            if curr_sum == target:
+                return i+1, j+1
+            elif curr_sum < target:
+                i += 1
+            else:
+                j -= 1
+```
