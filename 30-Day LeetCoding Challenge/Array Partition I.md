@@ -90,3 +90,4 @@ class Solution(object):
                     return sum(res)
         return -1
 ```
+在3的基础上，仔细想了一下，刚刚用数组其实没有必要，因为很多的elem是0  所以用hashtable最好。所以1里面的做法是对所有的elem排序，然后一个隔着一个取值求和。而做完hash之后，其实是对distinct values进行排序 然后分段求和。二者应该是应用的场景不同。这里就不再继续了。
