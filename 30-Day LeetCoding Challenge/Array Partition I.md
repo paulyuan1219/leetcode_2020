@@ -25,3 +25,28 @@ class Solution(object):
         nums1 = sorted(nums)
         return sum([nums1[i] for i in range(0, len(nums), 2)])
 ```
+
+Solution 2:
+
+This time, we use a hash table. The code is short . The time complexity is high, only beating 7%
+
+```
+class Solution(object):
+    def arrayPairSum(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        offset = 10000
+        freq_array = [0] * 20001
+        for num in nums:
+            freq_array[num+offset] += 1
+
+        l = []
+        for i in range(len(freq_array)):
+            if freq_array[i] > 0:
+                l.extend([i-offset for x in range(freq_array[i])])
+                if len(l) == len(nums):
+                    break
+        return sum([l[i] for i in range(0, len(l), 2)])
+```
