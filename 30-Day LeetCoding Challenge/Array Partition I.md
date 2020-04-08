@@ -50,3 +50,43 @@ class Solution(object):
                     break
         return sum([l[i] for i in range(0, len(l), 2)])
 ```
+
+Solution 3: 比2还要差。。。
+
+```
+class Solution(object):
+    def arrayPairSum(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        offset = 10000
+        freq_array = [0 for x in range(offset*2+1)]# [0] * 20001
+        for num in nums:
+            freq_array[num+offset] += 1
+
+        N = int(len(nums)/2) # this our target number of completed pairs
+        res = [] # a list of min values of each pair
+        pair_middle = False
+        for i in range(len(freq_array)):
+            if freq_array[i] > 0:
+                curr_value = i - offset
+                curr_freq = freq_array[i]
+                if pair_middle:
+                    curr_freq -= 1
+                    pair_middle = False
+                
+                if curr_freq == 0:
+                    continue
+                
+                if curr_freq%2 == 0:
+                    times = int(curr_freq / 2)
+                else:
+                    times = int(curr_freq / 2) + 1
+                    pair_middle = True
+                res += [curr_value for x in range(times)]
+                
+                if len(res) == N:
+                    return sum(res)
+        return -1
+```
