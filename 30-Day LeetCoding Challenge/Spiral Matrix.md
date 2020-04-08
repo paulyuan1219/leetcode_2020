@@ -40,4 +40,48 @@ Solution:
 注意，这里我使用的是水平方向到底，垂直方向相应缩短的写法。之所以不用之前说的左闭右开的方式，是因为它无法处理最后剩下单个元素未曾访问的情况，比如example 1中间的5的
 注意，这里我使用的是水平方向到底，垂直方向相应缩短的写法。之所以不用之前说的左闭右开的方式，是因为它无法处理最后剩下单个元素未曾访问的情况，比如example 1中间的5
 
+注意，如果只是这么写的话，上述的5有可能被访问两次，就是水平方向向右一次，向左再一次，垂直方向没有。为了解决这个问题，我们在计算res3 res4的时候，必须保证res3和res1不重叠，res4和res2不重叠
 
+还有一点很需要注意，在一个测试case中，我们出了错，对于一个shape=(2,10)的矩阵，我们的结果多跑了很多。仔细查看以后，发现我们在程序的入口处还需要一个验证。对于给定的matrix以及固定的M N，我们当遇到一个新的lc的时候，必须看看此时我们将要访问的还是不是一个合理的矩阵。换句话说，如果发现下一个矩阵里面已经被访问过了，那么就应该及时返回。
+
+
+```
+class Solution(object):
+    def spiralOrder(self, matrix):
+        """
+        :type matrix: List[List[int]]
+        :rtype: List[int]
+        """
+        def helper(matrix, M, N, lc): # lc means loop count, default = 0
+            # first, need to validate
+            if lc > M-1-lc or lc > N-1-lc:
+                return []
+            
+            res1 = matrix[lc][lc:N - lc] # we are at row-lc
+            res2 = [x[N-1-lc] for x in matrix[lc+1: M -1 - lc]] # we are at col-(N-1-lc)
+            res3 = matrix[M-1-lc][lc:N-lc][::-1] if M-1-lc != lc else []
+            res4 = [x[lc] for x in matrix[1+lc:M-lc-1]][::-1] if N-1-lc != lc else []
+            
+            res = res1 + res2 + res3 + res4
+            if len(res1) == 0 or len(res2) == 0 or len(res3) == 0 or len(res4) == 0:
+                return res
+            else:
+                # they are all non-zero, which means we can go another loop
+                return res + helper(matrix, M, N, lc+1)
+            
+       
+        M = len(matrix)
+        if M == 0:
+            return []
+        N = len(matrix[0])
+        if N == 0:
+            return []
+        if M == 1:
+            return matrix[0]
+        if N == 1:
+            return [x[0] for x in matrix]
+        
+        # if we reach here, the matrix is a normal one, with num_rows >=2 and num_cols >=2
+        # Therefore, we can have at least one loop
+        return helper(matrix, M, N, 0)
+```
