@@ -1,3 +1,3 @@
 # leetcode_2020
-This is for test
-This is another test
+Just for test.
+
