@@ -56,9 +56,43 @@ class Solution(object):
                 
 ```
 
-Solution 2: not finished yet
+Solution 2: 
 
 I should use a heap to maintain the best order. I can either implement the heap, or just use the exising heapq module
+
+```
+from heapq import *
+class Solution(object):
+    def lastStoneWeight(self, stones):
+        """
+        :type stones: List[int]
+        :rtype: int
+        """
+        l1 = stones
+        
+        if len(l1) == 0:
+            return 0
+        elif len(l1) == 1:
+            return l1[0]
+
+        heap = [-x for x in l1]
+        heapify(heap)
+        
+        while len(heap) >= 2:
+            s1 = heappop(heap)
+            s2 = heappop(heap)
+            diff = s1 - s2
+            if diff < 0:
+                heappush(heap, diff)
+        return 0 if len(heap) == 0 else -heap[0]
+
+                
+```
+
+
+
+
+
 
 ```
 '''
